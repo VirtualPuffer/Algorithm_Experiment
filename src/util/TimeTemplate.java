@@ -13,7 +13,7 @@ public class TimeTemplate {
         this.startNano = System.nanoTime();
     }
 
-    public long end(){
+    public double end(){
         return System.currentTimeMillis() - startTime;
     }
 
