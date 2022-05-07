@@ -11,7 +11,6 @@ public class Console {
         TimeTemplate template = new TimeTemplate();
         for(int k = 0;k<20;k++){
             int[] mud = {6,1,4,9,8,5};
-            //mud = Number.getRandom(2000,1000,false);
             int length = mud.length;
             int all = 0;
             for(Integer get : mud){
