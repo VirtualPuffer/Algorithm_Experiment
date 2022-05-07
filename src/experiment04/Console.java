@@ -11,7 +11,7 @@ public class Console {
         TimeTemplate template = new TimeTemplate();
         for(int k = 0;k<20;k++){
             int[] mud = {6,1,4,9,8,5};
-            mud = Number.getRandom(16000,10,false);
+            //mud = Number.getRandom(2000,1000,false);
             int length = mud.length;
             int all = 0;
             for(Integer get : mud){
@@ -33,8 +33,8 @@ public class Console {
                     arr[i][i] = mud[i];
                 }
             }
+            boolean tag = true;
             while (step<mud.length){
-                //System.out.println(step);
                 for(int i = 0;i+step<mud.length;i++){
                     int  j = i+step;
                     if((mud.length - step )% 2 == 0){
