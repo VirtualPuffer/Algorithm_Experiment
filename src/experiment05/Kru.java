@@ -7,7 +7,17 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
+
+class x{
+    int index;
+    int size;
+    public x(int index,int size){
+        this.index = index;
+        this.size = size;
+    }
+}
 public class Kru {
+
     public static void kru() throws FileNotFoundException {
         TimeTemplate template = new TimeTemplate();
         /*InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
