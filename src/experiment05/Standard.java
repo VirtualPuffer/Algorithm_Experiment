@@ -27,17 +27,17 @@ class Point{
     }
 }
 public class Standard {
-    public static void main(String[] args) throws FileNotFoundException {
-        InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
+    public static void stand() throws FileNotFoundException {
+        /*InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
         Scanner scanner = new Scanner(input);
         int point = scanner.nextInt();
-        int line = scanner.nextInt();
+        int line = scanner.nextInt();*/
 
-        /*InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\largeG.txt");
+        InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\largeG.txt");
         //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\page");
         Scanner scanner = new Scanner(input);
         int line = scanner.nextInt();
-        int point = scanner.nextInt();*/
+        int point = scanner.nextInt();
         System.out.println(line);
 
         Set<Integer>[] arr = new HashSet[point];
