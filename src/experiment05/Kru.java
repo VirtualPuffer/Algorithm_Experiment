@@ -52,13 +52,14 @@ public class Kru {
             }
         }catch (Exception p){
         }
-
+        TimeTemplate t = new TimeTemplate();
         //建立最小生成树
         int tag = 1;
+        int[] floor = new int[point];
         int[] tagArr = new int[point];
         int c = 0;
         for(int i  = 0;i<point;i++){c++;
-            if(dfs(arr,keySet,tagArr,i,tag)){
+            if(dfs(arr,keySet,tagArr,i,tag,floor,0)){
                 tag++;
             }
         }
@@ -67,7 +68,7 @@ public class Kru {
         int p = 0;
         for(Point px : set){
             if(!keySet[px.a].contains(px.b)){
-                findFather(keySet,black,px.a,px.b,-1);
+                findFather(keySet,black,px.a,px.b,-1,floor);
             }
         }
         int all = 0;
@@ -82,7 +83,7 @@ public class Kru {
         }
         System.out.println(all);
     }
-    public static boolean findFather(Set<Integer>[] keySet,Set<Integer>[] black,int index,int target,int fa){
+    public static boolean findFather(Set<Integer>[] keySet,Set<Integer>[] black,int index,int target,int fa,int[] floor){
         if(target == index){
             black[index].add(target);
             black[target].add(index);
@@ -92,7 +93,10 @@ public class Kru {
                 if(next == fa){
                     continue;
                 }
-                if(findFather(keySet,black,next,target,index)){
+                if(floor[next]>floor[target]){
+                    //continue;
+                }
+                if(findFather(keySet,black,next,target,index,floor)){
                     black[index].add(next);
                     black[next].add(index);
                     return true;
@@ -101,16 +105,17 @@ public class Kru {
             return false;
         }
     }
-    public static boolean dfs(Set<Integer>[] arr,Set<Integer>[] keySet,int[] tagArr,int index,int tag){
+    public static boolean dfs(Set<Integer>[] arr,Set<Integer>[] keySet,int[] tagArr,int index,int tag,int[] floor,int f){
         if(tagArr[index]!=0){
             return false;
         }else {
+            floor[index] = f;
             tagArr[index] = tag;
             for(Integer next : arr[index]){
                 if(tagArr[next]==0){
                     keySet[next].add(index);
                     keySet[index].add(next);
-                    dfs(arr,keySet,tagArr,next,tag);
+                    dfs(arr,keySet,tagArr,next,tag,floor,f+1);
                 }
             }
             if(arr[index].size()>0){
@@ -118,33 +123,5 @@ public class Kru {
             }
         }
         return false;
-    }
-    public static boolean bfs(Set<Integer>[] arr,int a,int b){
-        int[] access = new int[arr.length];
-        LinkedList<Integer> list = new LinkedList();
-        //list.add(b);
-        for(Integer c : arr[a]){
-            if(access[c] == 0 ){
-                if(c != b){
-                    list.addLast(c);
-                }
-                access[c] = 1;
-            }
-        }
-        access[a] =1;
-        while(!list.isEmpty()){
-            int get = list.getFirst();
-            list.removeFirst();
-            for(Integer c : arr[get]){
-                if(access[c] == 0 ){
-                    list.addLast(c);
-                    access[c] = 1;
-                }
-                if(c.equals(b)){
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
