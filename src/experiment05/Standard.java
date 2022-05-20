@@ -8,6 +8,7 @@ import java.util.*;
 class Point{
     int a;
     int b;
+    long x;
     public Point(int a ,int b){
         this.a = a;
         this.b = b;
