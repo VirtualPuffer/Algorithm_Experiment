@@ -32,12 +32,7 @@ class x{
 public class Kru {
 
     public static void kru() throws FileNotFoundException {
-        TimeTemplate template = new TimeTemplate();        //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\page");
-
-        /*InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
-        Scanner scanner = new Scanner(input);
-        int point = scanner.nextInt();
-        int line = scanner.nextInt();*/
+        //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\page");
         InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\2.txt");
          //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\largeG.txt");
         //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
@@ -47,11 +42,11 @@ public class Kru {
         System.out.println(line);
 
         Set<Integer>[] arr = new HashSet[point];
-        LinkedList<Integer>[] keySet = new LinkedList[point];
+        int[] keySet = new int[point];
         Set<Integer>[] black = new HashSet[point];
         for(int i = 0;i<point;i++){
             arr[i] = new HashSet<>();
-            keySet[i] = new LinkedList();
+            keySet[i] = -1;
             black[i]=  new HashSet<>();
         }
         Set<Point> set = new HashSet<>();
@@ -75,33 +70,29 @@ public class Kru {
         }
         int c = 0;
         for(int i  = 0;i<point;i++){
-            c++;
-            if(bfs(arr,keySet,tagArr,i,i,floor,0)){
-                tag++;
-            }
+            bfs(arr,keySet,tagArr,i);
         }
         System.out.println("____");
         int p = 0;
         int oo =0;
         //System.out.println(set.size());
         for(Point px : set){
-            if(!keySet[px.a].contains(px.b)){
+            if(keySet[px.a]!=px.b && keySet[px.b]!=px.a){
                 findFather(tagArr,keySet,black,px.a,px.b);
             }
         }
         int all = 0;
         for(int i = 0;i<keySet.length;i++){
-            for(Integer j : keySet[i]){
-                if(!black[i].contains(j)){
-                    black[j].add(i);
-                    all++;
-                    //System.out.println(i+"  "+j);
-                }
-            }
+            int j = keySet[i];
+            //if(!black[i].contains(j) && j!=-1){
+            //    System.out.println(i+"  "+j);
+            //    all++;
+            //}
         }
         System.out.println(all);
+        System.out.println("time: " + t.end()/1000);
     }
-    public static void findFather(int[] tagArr,LinkedList<Integer>[] keySet,Set<Integer>[] black,int index,int target) {
+    public static void findFather(int[] tagArr,int[] keySet,Set<Integer>[] black,int index,int target) {
         if(black[index].size()!=0 && black[target].size()!=0){
             //return;
         }
@@ -110,7 +101,7 @@ public class Kru {
         Map<Integer,Integer> map = new HashMap<>();
         int current = index;
         while (current!=pa){
-            int fa = keySet[current].getFirst();
+            int fa = keySet[current];
             map.put(current,fa);
             current = fa;//祖先
         };
@@ -118,7 +109,7 @@ public class Kru {
         boolean mode = true;
         int ag = -1;
         while (t!=pa){
-            int ta = keySet[t].getFirst();
+            int ta = keySet[t];
             if(map.containsKey(t) && mode){
                 ag = t;
                 mode = false;
@@ -136,17 +127,17 @@ public class Kru {
             black[b].add(g);
         }
         if(map.containsKey(target) && ag!=-1){
-            keySet[target].addFirst(ag);
+            keySet[target]=ag;
             black[target].add(ag);
         }
         if(map.containsKey(index)&&ag!=-1){
-            keySet[index].addFirst(ag);
+            keySet[index]=ag;
             black[index].add(ag);
         }
     }
-    public static boolean bfs(Set<Integer>[] arr,LinkedList[] keySet,int[] tagArr,int index,int tag,int[] floor,int f){
+    public static void bfs(Set<Integer>[] arr,int[] keySet,int[] tagArr,int index){
         if(tagArr[index]!=-1){
-            return false;
+            return;
         }else {
             LinkedList<Integer> list = new LinkedList<>();
             list.addLast(index);
@@ -156,17 +147,12 @@ public class Kru {
                 list.removeFirst();
                 for(Integer next : arr[get]){
                     if(tagArr[next] == -1){
-                        keySet[next].addLast(get);
-                        keySet[get].addLast(next);
-                        tagArr[next] = index;
+                        keySet[next]=get;
                         list.addLast(next);
+                        tagArr[next] = index;
                     }
                 }
             }
-            if(arr[index].size()>0){
-                return true;
-            }
         }
-        return false;
     }
 }
