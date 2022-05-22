@@ -43,11 +43,12 @@ public class Kru {
 
         Set<Integer>[] arr = new HashSet[point];
         int[] keySet = new int[point];
-        Set<Integer>[] black = new HashSet[point];
+        int[] fSet = new int[point];
+        boolean[] tp = new boolean[point];
         for(int i = 0;i<point;i++){
-            arr[i] = new HashSet<>();
+            tp[i] = true;
             keySet[i] = -1;
-            black[i]=  new HashSet<>();
+            arr[i] = new HashSet<>();
         }
         Set<Point> set = new HashSet<>();
         while (line>0){
@@ -62,94 +63,73 @@ public class Kru {
         System.out.println("line " + line);
         TimeTemplate t = new TimeTemplate();
         //建立最小生成树
-        int tag = 1;
-        int[] floor = new int[point];
-        int[] tagArr = new int[point];
-        for(int i = 0;i<point;i++){
-            tagArr[i] = -1;
-        }
-        int c = 0;
         for(int i  = 0;i<point;i++){
-            bfs(arr,keySet,tagArr,i);
+            bfs(arr,keySet,fSet,i);
         }
         System.out.println("____");
-        int p = 0;
-        int oo =0;
-        //System.out.println(set.size());
         for(Point px : set){
-            if(keySet[px.a]!=px.b && keySet[px.b]!=px.a){
-                findFather(tagArr,keySet,black,px.a,px.b);
+            if(fSet[px.a]!=px.b && fSet[px.b]!=px.a){
+                findFather(keySet,px.a,px.b,tp);
             }
         }
         int all = 0;
         for(int i = 0;i<keySet.length;i++){
-            int j = keySet[i];
-            //if(!black[i].contains(j) && j!=-1){
-            //    System.out.println(i+"  "+j);
-            //    all++;
-            //}
+            int f = fSet[i];
+            if(tp[i] && f!=0){
+                System.out.println(i+"   "+f);
+                all++;
+            }
         }
-        System.out.println(all);
+        System.out.println("all  "+all);
         System.out.println("time: " + t.end()/1000);
     }
-    public static void findFather(int[] tagArr,int[] keySet,Set<Integer>[] black,int index,int target) {
-        if(black[index].size()!=0 && black[target].size()!=0){
-            //return;
-        }
-        int pa = tagArr[index];
+    public static void findFather(int[] keySet,int index,int target,boolean[] tp) {
         Set<Integer> set = new HashSet<>();
-        Map<Integer,Integer> map = new HashMap<>();
         int current = index;
-        while (current!=pa){
+        while (keySet[current]!=-2){
             int fa = keySet[current];
-            map.put(current,fa);
+            set.add(current);
             current = fa;//祖先
         };
         int t =target;
         boolean mode = true;
         int ag = -1;
-        while (t!=pa){
+        while (keySet[t]!=-2){
             int ta = keySet[t];
-            if(map.containsKey(t) && mode){
+            if(set.contains(t) && mode){
                 ag = t;
                 mode = false;
             }
             if(mode){
-                map.put(t,ta);//添加
+                set.add(t);
             }else {
-                map.remove(t);//删除公共边
+                set.remove(t);
             }
             t = ta;
         }
-        for(Integer g : map.keySet()){
-            int b = map.get(g);
-            black[g].add(b);
-            black[b].add(g);
-        }
-        if(map.containsKey(target) && ag!=-1){
-            keySet[target]=ag;
-            black[target].add(ag);
-        }
-        if(map.containsKey(index)&&ag!=-1){
-            keySet[index]=ag;
-            black[index].add(ag);
+        for(Integer g : set){
+            tp[g] = false;
+            if(ag!= -1){
+                keySet[g] = ag;
+            }
         }
     }
-    public static void bfs(Set<Integer>[] arr,int[] keySet,int[] tagArr,int index){
-        if(tagArr[index]!=-1){
+    public static void bfs(Set<Integer>[] arr,int[] keySet,int[] fSet,int index){
+        if(keySet[index]!=-1){
             return;
         }else {
             LinkedList<Integer> list = new LinkedList<>();
             list.addLast(index);
-            tagArr[index] = index;
+            keySet[index] = -2;
             while (!list.isEmpty()){
                 int get = list.getFirst();
                 list.removeFirst();
                 for(Integer next : arr[get]){
-                    if(tagArr[next] == -1){
+                    if(keySet[next] == -1){
                         keySet[next]=get;
+                        //arr[next].remove(get);
+                        fSet[next] = get;
                         list.addLast(next);
-                        tagArr[next] = index;
                     }
                 }
             }

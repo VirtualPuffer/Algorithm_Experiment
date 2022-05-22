@@ -9,6 +9,7 @@ class Point{
     int a;
     int b;
     long x;
+    boolean r = true;
     public Point(int a ,int b){
         this.a = a;
         this.b = b;
@@ -19,7 +20,7 @@ class Point{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return a == point.a && b == point.b;
+        return a+b == point.a+point.b && a-b == point.a-point.b;
     }
 
     @Override
