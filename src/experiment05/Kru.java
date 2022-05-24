@@ -31,11 +31,8 @@ class x{
 }
 public class Kru {
 
-    public static void kru() throws FileNotFoundException {
-        //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\page");
-        InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\2.txt");
-         //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\largeG.txt");
-        //InputStream input = new FileInputStream("D:\\Java\\IdeaProjects\\algorithm\\report\\实验5\\mediumDG.txt");
+    public static void kru(InputStream input) throws FileNotFoundException {
+        System.out.println("____ 数据加载中 ____");
         Scanner scanner = new Scanner(input);
         int point = scanner.nextInt();
         int line = scanner.nextInt();
@@ -59,14 +56,12 @@ public class Kru {
             arr[a].add(b);
             arr[b].add(a);
         }
-        System.out.println("______");
-        System.out.println("line " + line);
         TimeTemplate t = new TimeTemplate();
         //建立最小生成树
         for(int i  = 0;i<point;i++){
             bfs(arr,keySet,fSet,i);
         }
-        System.out.println("____");
+        System.out.println("____ 数据加载完成 ____");
         for(Point px : set){
             if(fSet[px.a]!=px.b && fSet[px.b]!=px.a){
                 findFather(keySet,px.a,px.b,tp);
@@ -76,12 +71,14 @@ public class Kru {
         for(int i = 0;i<keySet.length;i++){
             int f = fSet[i];
             if(tp[i] && f!=0){
-                System.out.println(i+"   "+f);
+                //System.out.println(i+"   "+f);
                 all++;
             }
         }
         System.out.println("all  "+all);
-        System.out.println("time: " + t.end()/1000);
+        System.out.println("time: " + t.nanoEnd());
+        System.out.println("___________________________________");
+        System.out.println();
     }
     public static void findFather(int[] keySet,int index,int target,boolean[] tp) {
         Set<Integer> set = new HashSet<>();
