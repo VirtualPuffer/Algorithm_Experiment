@@ -107,7 +107,7 @@ public class Kru {
         for(Integer g : set){
             tp[g] = false;
             if(ag!= -1){
-                keySet[g] = ag;
+                //keySet[g] = ag;
             }
         }
     }
