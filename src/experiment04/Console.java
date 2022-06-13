@@ -16,6 +16,7 @@ public class Console {
             for(Integer get : mud){
                 all += get;
             }
+            
             int[][] arr = new int[length][length];
             int[][] cjj = new int[length][length];
             for(int i = 0;i<mud.length;i++){
@@ -55,7 +56,5 @@ public class Console {
             ret = arr[0][mud.length-1];
         }
         System.out.println(template.end()/20000);
-        //System.out.println(ret);
-        //System.out.println(all - ret);
     }
 }
